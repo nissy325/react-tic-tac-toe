@@ -28,23 +28,23 @@ function Board({ xIsNext, squares, onPlay} ) {
     status = "Next player: " + (xIsNext ? "X" : "O")
   }
 
+  const board = squares.map((square, i) => {
+    return (
+      <Square key={i} value={square} onSquareClick={ () => handleClick(i)} />
+    )
+  })
+
   return (
     <>
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square value={squares[0]} onSquareClick={ () => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={ () => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={ () => handleClick(2)} />
+        {board.slice(0, 3)}
       </div>
       <div className="board-row">
-        <Square value={squares[3]} onSquareClick={ () => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={ () => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={ () => handleClick(5)} />
+        {board.slice(3, 6)}
       </div>
       <div className="board-row">
-        <Square value={squares[6]} onSquareClick={ () => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={ () => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={ () => handleClick(8)} />
+        {board.slice(6, 9)}
       </div>
     </>
   )
