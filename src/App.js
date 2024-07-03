@@ -26,7 +26,7 @@ function Board({ xIsNext, squares, onPlay} ) {
   let status;
 
   if(winnerSquareIndexes) {
-    status = "Winner: " + winnerSquareIndexes;
+    status = "Winner: " + squares[winnerSquareIndexes[0]];
   } else if (squares.every((element) => element !== null)) {
     status = "Drew!"
   } else {
