@@ -76,6 +76,7 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquares = history[currentMove];
   const xIsNext = currentMove % 2 === 0;
+  const [displayIsAsc, setDisplayIsAsc] = useState(true);
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -87,14 +88,28 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  function toggleAsc() {
+    const new_asc = !displayIsAsc;
+    setDisplayIsAsc(new_asc);
+  }
+
+  const displayMoves = () => {
+    if (displayIsAsc) {
+      return history;
+    } else {
+      return history.toReversed();
+    }
+  }
+
+  const moves = displayMoves().map((squares, move) => {
+    const moveIndex = displayIsAsc ? move : history.length - 1 - move;
     let description;
-    if (move > 0) {
-      if (move === currentMove) {
-        description = 'You are at move #' + move;
+    if (moveIndex > 0) {
+      if (moveIndex === currentMove) {
+        description = 'You are at move #' + moveIndex;
 
       } else {
-        description = 'Go to move #' + move;
+        description = 'Go to move #' + moveIndex;
       }
     } else {
       description = 'Go to game start';
@@ -102,7 +117,7 @@ export default function Game() {
 
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        <button onClick={() => jumpTo(moveIndex)}>{description}</button>
       </li>
     )
   })
@@ -114,6 +129,9 @@ export default function Game() {
       </div>
       <div className="game-info">
         <ol>{moves}</ol>
+      </div>
+      <div className="game-info">
+        <button onClick={() => toggleAsc()}>並び替え</button>
       </div>
     </div>
   )
