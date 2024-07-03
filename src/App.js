@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick, win}) {
+  const squareClassName = win ? "square win" : "square";
+
   return (
-    <button className="square" onClick={onSquareClick}>{ value }</button>
+    <button className={squareClassName} onClick={onSquareClick}>{ value }</button>
   )
 }
 
@@ -20,10 +22,11 @@ function Board({ xIsNext, squares, onPlay} ) {
     onPlay(nextSquares);
   }
 
-  const winner = calculateWinner(squares);
+  const winnerSquareIndexes = calculateWinner(squares);
   let status;
-  if(winner) {
-    status = "Winner: " + winner;
+
+  if(winnerSquareIndexes) {
+    status = "Winner: " + winnerSquareIndexes;
   } else if (squares.every((element) => element !== null)) {
     status = "Drew!"
   } else {
@@ -31,8 +34,10 @@ function Board({ xIsNext, squares, onPlay} ) {
   }
 
   const board = squares.map((square, i) => {
+    const isWinnerSquare = winnerSquareIndexes && winnerSquareIndexes.includes(i)
+
     return (
-      <Square key={i} value={square} onSquareClick={ () => handleClick(i)} />
+      <Square key={i} value={square} onSquareClick={ () => handleClick(i)} win={isWinnerSquare}/>
     )
   })
 
@@ -66,7 +71,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return lines[i]
     }
   }
 
@@ -119,7 +124,7 @@ export default function Game() {
 
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(moveIndex)}>{description}</button>
+        <button onClick={() => jumpTo(moveIndex)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{description}</button>
       </li>
     )
   })
@@ -133,7 +138,7 @@ export default function Game() {
         <ol>{moves}</ol>
       </div>
       <div className="game-info">
-        <button onClick={() => toggleAsc()}>並び替え</button>
+        <button onClick={() => toggleAsc()} className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">並び替え</button>
       </div>
     </div>
   )

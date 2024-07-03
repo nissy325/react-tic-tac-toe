@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   box-sizing: border-box;
 }
@@ -87,4 +91,8 @@ body {
 
 .game-info {
   margin-left: 20px;
+}
+
+.win {
+  background-color: #81C7D4;
 }
